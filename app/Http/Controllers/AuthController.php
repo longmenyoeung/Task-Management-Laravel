@@ -32,5 +32,11 @@ class AuthController extends Controller
         ], 201);
     }
 
-    
+    //get list all users
+    public function index () {
+        $user = User::paginate(10);
+        return response()->json($user);
+    }
+
+
 }
