@@ -13,12 +13,7 @@ class CategoryController extends Controller
     public function index()
     {
         $categories = Category::paginate(10);
-
-        return response()->json([
-            'success' => true,
-            'message' => 'get list categories.',
-            ...$categories
-        ],200);
+        return response()->json($categories);
     }
 
     /**
