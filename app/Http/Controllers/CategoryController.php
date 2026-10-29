@@ -10,9 +10,9 @@ class CategoryController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $categories = Category::paginate(10);
+        $categories = $request->user()->categories()->paginate(10);
         return response()->json($categories);
     }
 
@@ -65,7 +65,13 @@ class CategoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $category = Category::findOrFail($id);
+        $category = $request->user()
+                            ->categories()
+                            ->find($id);
+
+        if(!$category){
+            return response()->json(['message' => "Only owner can update this categories."], 403);
+        }
 
 
         $validated = $request->validate([
@@ -85,9 +91,16 @@ class CategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Request $request ,string $id)
     {
-        $category = Category::findOrFail($id);
+
+        $category = $request->user()
+                            ->categories()
+                            ->find($id);
+
+        if(!$category){
+            return response()->json(['message' => "Only owner can delete this categories."], 403);
+        }
 
         $category->delete();
 
