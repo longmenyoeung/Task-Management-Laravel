@@ -15,11 +15,13 @@ class checkRole
      */
         public function handle(Request $request, Closure $next, ...$roles): Response
         {
-            if(!$request->user()){
+            // Check authentication
+            if (!$request->user()) {
                 return response()->json([
-                    'message' => 'Unauthenticated',
+                    'message' => 'Unauthenticated.',
                 ], 401);
             }
+
 
 
             /*
@@ -28,12 +30,16 @@ class checkRole
                 true : $request->user()->role and $roles are matching will return true if not false
             */
 
-            if(!in_array($request->user()->role, $roles, true)){
-                return response()->json(['message' => 'You do not have permission...'], 403);
+             // Check authorization
+            if (!in_array($request->user()->role, $roles, true)) {
+                return response()->json([
+                    'message' => 'You do not have permission.',
+                ], 403);
             }
 
 
-            return next($request);
+            return $next($request);
+            
 
         }
 }

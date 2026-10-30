@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\TaskController;
@@ -21,7 +22,7 @@ Route::post('/auth/login', [AuthController::class, 'login']);
 
 // ============ Authenticate ============================
 Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/users', [AuthController::class, 'index']);
+    Route::get('/users', [AuthController::class, 'index'])->middleware('role:admin');
     Route::get('/users/me', [AuthController::class, 'me']);
     Route::post('/users/logout', [AuthController::class, 'logout']);
 
@@ -43,5 +44,16 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::put('/{id}', [TaskController::class, 'update']);
         Route::delete('/{id}', [TaskController::class, 'destroy']);
     });
+
+
+    //creat admin
+    // Route::middleware(['auth:sanctum', 'role:admin'])
+    // ->prefix('admin')
+    // ->group(function () {
+    //     Route::post('/create', [AdminController::class, 'store']);
+    // });
+    Route::prefix('admin')->group(function () {
+        Route::post('/create', [AdminController::class, 'store']);
+    })->middleware('role:admin');
 
 });
