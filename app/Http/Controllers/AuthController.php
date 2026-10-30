@@ -22,6 +22,7 @@ class AuthController extends Controller
 
         $user = User::create([
             ...$validated,
+            'role' => 'user'
         ]);
 
 

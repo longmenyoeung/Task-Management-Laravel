@@ -53,9 +53,11 @@ class TaskController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Request $request ,string $id)
     {
-        $task = Task::findOrFail($id);
+        $task = $request->user()
+                        ->tasks()
+                        ->findOrFail($id);
         return response()->json($task);
     }
 
