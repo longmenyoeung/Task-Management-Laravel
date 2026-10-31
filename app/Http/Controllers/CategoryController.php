@@ -72,7 +72,7 @@ class CategoryController extends Controller
 
 
         $validated = $request->validate([
-            'name' => ['sometimes', 'string', 'max:255'],
+            'name' => ['sometimes', 'string', 'max:255', 'unique:categories,name'],
             'description' => ['sometimes', 'string']
         ]);
         
